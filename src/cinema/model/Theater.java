@@ -1,5 +1,8 @@
 package cinema.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Theater {
 	
 	private int id;
@@ -48,5 +51,54 @@ public class Theater {
 		this.cols = cols;
 	}
 	
+	public int getAvailableSpace(Collection<Ticket> tickets, Hour hour){
+		
+		boolean[][] emptySeats = getEmptySeats(tickets, hour);
+		int availableSpaces =0;
+		for (int i = 0; i < emptySeats.length; i++) {
+			for (int j = 0; j < emptySeats[i].length; j++) {
+				if(emptySeats[i][j]){
+					availableSpaces++;
+				}
+			}
+			
+		}
+		return availableSpaces;
+	}
 	
-}
+	
+	public boolean[][] getEmptySeats(Collection<Ticket> tickets,Hour hour){
+			
+		boolean[][] emptySeats = new boolean[rows][cols];
+		
+		for (int i = 0; i < emptySeats.length; i++) {
+			boolean[] currentRow = emptySeats[i];
+			Arrays.fill(currentRow,true);
+		}
+		
+		for (Ticket ticket : tickets) {
+			
+			if(ticket.getTheater().equals(this)&& ticket.getHour().equals(hour)){
+				
+				emptySeats[ticket.getRow()-1][ticket.getCol()-1]= false;
+			}
+		}
+		return emptySeats;
+			
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if(!(other instanceof Theater)){
+			return false;
+		}
+		return this.getId() == ((Theater)other).getId();
+	}
+	
+	@Override
+	public int hashCode() {
+	
+		return this.getId();
+	}
+	}
