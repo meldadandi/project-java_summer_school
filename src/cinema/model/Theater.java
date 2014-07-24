@@ -1,5 +1,6 @@
 package cinema.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -49,6 +50,60 @@ public class Theater {
 	}
 	public void setCols(int cols) {
 		this.cols = cols;
+	}
+	
+	
+	public Collection<Ticket> getSeats(Collection<Ticket> tickets, Hour hour, int numPeople){
+		
+		boolean[][] emptySeats = getEmptySeats(tickets, hour);
+		Collection<Ticket> result = new ArrayList<>();
+		
+		for (int i = 0; i < emptySeats.length; i++) {
+			boolean[] currentRow = emptySeats[i];
+			for (int j = 0; j < currentRow.length; j++) {
+				boolean currentSeat= currentRow[j];
+				if(currentSeat){
+					result.add(new Ticket(i+1, j+1, hour, this));
+				}
+				if(result.size()==numPeople){
+					return result;
+				}
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	public Collection<Ticket> getContiguousSeats(Collection<Ticket> tickets,Hour hour, int numPeople){
+		
+		
+		boolean[][] emptySeats = getEmptySeats(tickets, hour);
+		int counter =0;
+		Collection<Ticket> results = new ArrayList<>();
+		
+		for (int i = 0; i < emptySeats.length; i++) {
+			
+			counter =0;
+			boolean[] currentRow = emptySeats[i];
+			for (int j = 0; j < currentRow.length; j++) {
+				if(currentRow[j]){
+					counter++;
+				}else{
+					counter=0;
+				}
+				if(counter == numPeople){
+					
+					for (int k=0; k < numPeople; k++) {
+						results.add(new Ticket(i+1,j+1, hour, this));
+					}
+					return results;
+				}
+			}
+			
+		}
+		
+		return results;
 	}
 	
 	public int getAvailableSpace(Collection<Ticket> tickets, Hour hour){
