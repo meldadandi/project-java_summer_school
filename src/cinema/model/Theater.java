@@ -1,6 +1,6 @@
 package cinema.model;
 
-public class Theather {
+public class Theater {
 	
 	private int id;
 	private String name;
@@ -9,14 +9,14 @@ public class Theather {
 	
 	
 	
-	public Theather(String name, int rows, int cols) {
+	public Theater(String name, int rows, int cols) {
 		super();
 		this.name = name;
 		this.rows = rows;
 		this.cols = cols;
 	}
 	
-	public Theather(int id, String name, int rows, int cols) {
+	public Theater(int id, String name, int rows, int cols) {
 		super();
 		this.id = id;
 		this.name = name;
